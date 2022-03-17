@@ -4,17 +4,20 @@ import { TaskType } from './App';
 type TaskManagerType = {
     title: string
     tasks: Array<TaskType>
+    removeTask: (taskID: number) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
+
     const tasks = props.tasks.map(task => {
         return (
             <li>
                 <input type="checkbox" checked={task.isDone} />
                 <span>{task.title}</span>
+                <button onClick={() => { props.removeTask(task.id); console.log('as') }}>X</button>
             </li>
         )
-    })
+    });
 
     return (
         <div>

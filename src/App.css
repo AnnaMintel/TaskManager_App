@@ -1,8 +1,12 @@
 .App {
   padding: 30px;
   display: flex;
+  z-index: 111111;
 }
 
 .App > div {
   margin-right: 50px;
+}
+body {
+  z-index: -1;
 }

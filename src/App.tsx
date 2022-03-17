@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { TaskManager } from "./TaskManager"; 
+import { TaskManager } from './TaskManager';
 
 export type TaskType = {
     title: string
@@ -9,25 +9,30 @@ export type TaskType = {
 }
 
 function App() {
-    // BLL: business logic lair
-    let tasks: Array<TaskType> = [
-        {title: "learn JS", id: 1, isDone: false},  
-        {title: "make makeUp", id: 2, isDone: true}, 
-        {title: "go for a walk", id: 3, isDone: false}
-    ];
+
+    const [tasks, setTasks] = useState<Array<TaskType>>(
+        [
+        { id: 1, title: "learn JS", isDone: false },
+        { id: 2, title: "make makeUp", isDone: true },
+        { id: 3, title: "go for a walk", isDone: false }
+    ])
 
     function removeTask(taskID: number) {
-        const filteredTasks = tasks.filter(t => t.id !== taskID) // true
-        tasks = filteredTasks
+        const filteredTasks = tasks.filter(task => task.id !== taskID) // true
+        setTasks (filteredTasks)
         console.log(tasks)
     }
-    
+
     //UI:
     return (
         <div className="App">
-           <TaskManager title={"Today's tasks"} tasks={tasks}/>
+            <TaskManager
+                title={"Today's tasks"}
+                tasks={tasks}
+                removeTask={removeTask}
+            />
 
-           {/* <TaskManager title={"English learning tasks"} tasks={tasksTwo}/> */}
+            {/* <TaskManager title={"English learning tasks"} tasks={tasksTwo}/> */}
         </div>
     );
 }
