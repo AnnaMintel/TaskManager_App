@@ -8,6 +8,7 @@ type TaskManagerType = {
     removeTask: (taskID: string) => void
     addTask: (title: string) => void
     changeFilter: (newFilterValue: FilterValuesType) => void
+    changeTaskStatus: (taskID: string, isDone: boolean) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
@@ -17,7 +18,12 @@ export const TaskManager = (props: TaskManagerType) => {
         let taskClass = task.isDone === true ? "is-done" : ""
         return (
             <li key={task.id} >
-                <input type="checkbox" checked={task.isDone} />
+                <input
+                    type="checkbox"
+                    checked={task.isDone}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => 
+                        props.changeTaskStatus(task.id, e.currentTarget.checked)}
+                />
                 <span className={taskClass}>{task.title}</span>
                 <button onClick={() => props.removeTask(task.id)}>X</button>
             </li>
@@ -32,17 +38,20 @@ export const TaskManager = (props: TaskManagerType) => {
         }
         setTitle(" ")
     }
+
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
         setError(false)
     }
+
     const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") { onClickAddTask(); }
     }
+
     const onClickSetAllFilter = () => props.changeFilter("all");
     const onClickSetActiveFilter = () => props.changeFilter("active");
     const onClickSetCompletedFilter = () => props.changeFilter("completed");
-    
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -54,7 +63,7 @@ export const TaskManager = (props: TaskManagerType) => {
                     className={error ? "error" : ""}
                 />
                 <button onClick={onClickAddTask}>+</button>
-                {error && <div style={{color: "red"}}>Title is required!</div>}
+                {error && <div style={{ color: "red" }}>Title is required!</div>}
             </div><ul>
                 {tasks}
             </ul><div>

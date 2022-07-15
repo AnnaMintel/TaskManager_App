@@ -13,6 +13,7 @@ export type FilterValuesType = "all" | "active" | "completed"
 
 function App() {
     console.log(v1());
+    // BLL
     const [filter, setFilter] = useState<FilterValuesType>("all")
     const [tasks, setTasks] = useState<Array<TaskType>>(
         [
@@ -26,11 +27,9 @@ function App() {
         setTasks (filteredTasks)
         console.log(tasks)
     }
-
     function changeFilter(newFilterValue: FilterValuesType){
         setFilter(newFilterValue) 
     }
-
     function addTask(title: string){
         const newTask: TaskType = {
             id: v1(),
@@ -40,6 +39,10 @@ function App() {
         const newTasks = [newTask, ...tasks];
         setTasks(newTasks);
         // setTasks([{id: v1(), title, isDone: false}, ...tasks]); // краткий вариант строк 35-41
+    }
+    function changeTaskStatus (taskID: string, isDone: boolean) {
+       const updatedTask = tasks.map(t => t.id === taskID ? {...t, isDone: isDone} : t)
+       setTasks(updatedTask)
     }
 
     let tasksForTaskManager = tasks
@@ -60,6 +63,7 @@ function App() {
                 addTask={addTask}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );
