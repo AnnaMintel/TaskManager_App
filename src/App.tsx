@@ -56,6 +56,7 @@ function App() {
             <TaskManager 
                 title={"Today's tasks"}
                 tasks={tasksForTaskManager}
+                filter={filter}
                 addTask={addTask}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
