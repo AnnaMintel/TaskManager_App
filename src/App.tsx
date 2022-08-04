@@ -45,7 +45,7 @@ function App() {
 
     function removeTask(taskID: string, taskListID: string) {
         tasks[taskListID] = tasks[taskListID].filter(task => task.id !== taskID)
-        setTasks({ ...tasks, [taskListID]})
+        setTasks({...tasks})
     }
     function addTask(title: string, taskListID: string) {
         const newTask: TaskType = {
@@ -59,40 +59,48 @@ function App() {
     }
     function changeTaskStatus(taskID: string, isDone: boolean, taskListID: string) {
         tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, isDone: isDone } : t)
-        setTasks({...tasks})
+        setTasks({ ...tasks })
     }
     function changeFilter(filter: FilterValuesType, taskListID: string) {
-        setLists(lists.map(t => t.id === taskListID ? {...t, filter: filter} : t))
+        setLists(lists.map(t => t.id === taskListID ? { ...t, filter: filter } : t))
     }
     const removeTaskList = (taskListID: string) => {
         setLists(lists.filter(t => t.id === taskListID))
-        const copyTasks = {...tasks}
+        const copyTasks = { ...tasks }
         delete copyTasks[taskListID]
         setTasks(copyTasks)
     }
 
-    let tasksForTaskManager = tasks
-    if (filter === "active") {
-        tasksForTaskManager = tasks.filter(t => t.isDone === false)
-    }
-    if (filter === "completed") {
-        tasksForTaskManager = tasks.filter(t => t.isDone === true)
-    }
-
     //UI:
-    return (
-        <div className="App">
+    const taskListComponents = lists.map(t => {
+        let tasksForTaskManager = tasks[t.id]
+        if (t.filter === "active") {
+            tasksForTaskManager = tasks[t.id].filter(t => t.isDone === false)
+        }
+        if (t.filter === "completed") {
+            tasksForTaskManager = tasks[t.id].filter(t => t.isDone === true)
+        }
+
+        return (
             <TaskManager
-                title={"Today's tasks"}
+                key={t.id}
+                id={t.id}
+                filter={t.filter}
+                title={t.title}
                 tasks={tasksForTaskManager}
-                filter={filter}
                 addTask={addTask}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
+                removeTaskList={removeTaskList}
                 changeTaskStatus={changeTaskStatus}
             />
+        )
+    })
+
+    return (
+        <div className="App">
+            {taskListComponents}
         </div>
     );
 }
-
 export default App;

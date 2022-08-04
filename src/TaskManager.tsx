@@ -2,13 +2,15 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { FilterValuesType, TaskType } from './App';
 
 type TaskManagerType = {
+    id: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (taskID: string) => void
-    addTask: (title: string) => void
-    changeFilter: (newFilterValue: FilterValuesType) => void
-    changeTaskStatus: (taskID: string, isDone: boolean) => void
+    removeTask: (taskID: string, taskListID: string) => void
+    changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
+    changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
+    addTask: (title: string, taskListID: string) => void
+    removeTaskList: (taskListID: string) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
