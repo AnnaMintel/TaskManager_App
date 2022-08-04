@@ -65,7 +65,7 @@ function App() {
         setLists(lists.map(t => t.id === taskListID ? { ...t, filter: filter } : t))
     }
     const removeTaskList = (taskListID: string) => {
-        setLists(lists.filter(t => t.id === taskListID))
+        setLists(lists.filter(t => t.id !== taskListID))
         const copyTasks = { ...tasks }
         delete copyTasks[taskListID]
         setTasks(copyTasks)
