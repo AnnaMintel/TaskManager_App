@@ -1,4 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { AddItemForm } from './AddItemForm';
 import { FilterValuesType, TaskType } from './App';
 
 type TaskManagerType = {
@@ -14,8 +15,8 @@ type TaskManagerType = {
 }
 
 export const TaskManager = (props: TaskManagerType) => {
-    const [title, setTitle] = useState<string>(" ");
-    const [error, setError] = useState<boolean>(false)
+
+    const addTask = (title: string) => props.addTask(title, props.id);
 
     const getTaskJSXElement = (task: TaskType) => {
         let taskClass = task.isDone === true ? "is-done" : ""
@@ -35,25 +36,6 @@ export const TaskManager = (props: TaskManagerType) => {
 
     const tasks = props.tasks.map(getTaskJSXElement);
 
-    const onClickAddTask = () => {
-        const validatedTitle = title.trim()
-        if (validatedTitle) {
-            props.addTask(validatedTitle, props.id)
-        } else {
-            setError(true)
-        }
-        setTitle(" ")
-    }
-
-    const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-        setError(false)
-    }
-
-    const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") { onClickAddTask(); }
-    }
-
     const onClickSetAllFilter = () => props.changeFilter("all", props.id);
     const onClickSetActiveFilter = () => props.changeFilter("active", props.id);
     const onClickSetCompletedFilter = () => props.changeFilter("completed", props.id);
@@ -62,16 +44,10 @@ export const TaskManager = (props: TaskManagerType) => {
     return (
         <div>
             <h3>{props.title}<button onClick={removeWholeTaskList}>x</button></h3>
-            <div>
-                <input
-                    value={title}
-                    onChange={onChangeTitle}
-                    onKeyPress={onKeyPressAddTask}
-                    className={error ? "error" : ""}
-                />
-                <button onClick={onClickAddTask}>+</button>
-                {error && <div style={{ color: "red" }}>Title is required!</div>}
-            </div><ul>
+
+           <AddItemForm addItem={addTask} />
+
+            <ul>
                 {tasks}
             </ul><div>
                 <button

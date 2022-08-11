@@ -70,6 +70,12 @@ function App() {
         delete copyTasks[taskListID]
         setTasks(copyTasks)
     }
+    const addTaskList = (title: string) => {
+        const newTaskListID = v1();
+        const newtaskList: TaskListType= {id: newTaskListID, title, filter: 'all'}
+        setLists([...lists, newtaskList])
+        setTasks({...tasks, [newTaskListID]: []})
+    }
 
     //UI:
     const taskListComponents = lists.map(t => {
