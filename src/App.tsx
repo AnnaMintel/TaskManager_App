@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
+import { AddItemForm } from './AddItemForm';
 import './App.css';
 import { TaskManager } from './TaskManager';
 
@@ -61,8 +62,15 @@ function App() {
         tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, isDone: isDone } : t)
         setTasks({ ...tasks })
     }
+    function changeTaskTitle(taskID: string, newTitle: string, taskListID: string) {
+        tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, title: newTitle} : t)
+        setTasks({ ...tasks })
+    }
     function changeFilter(filter: FilterValuesType, taskListID: string) {
         setLists(lists.map(t => t.id === taskListID ? { ...t, filter: filter } : t))
+    }
+    function changeTaskListHeader(newTitle: string, taskListID: string) {
+        setLists(lists.map(t => t.id === taskListID ? { ...t, title: newTitle } : t))
     }
     const removeTaskList = (taskListID: string) => {
         setLists(lists.filter(t => t.id !== taskListID))
@@ -99,12 +107,15 @@ function App() {
                 changeFilter={changeFilter}
                 removeTaskList={removeTaskList}
                 changeTaskStatus={changeTaskStatus}
+                changeTaskTitle={changeTaskTitle}
+                changeTaskListHeader={changeTaskListHeader}
             />
         )
     })
 
     return (
         <div className="App">
+            <AddItemForm addItem={addTaskList}/>
             {taskListComponents}
         </div>
     );

@@ -4,8 +4,6 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
- 
-
 export const AddItemForm = (props: AddItemFormPropsType) => {
 
     const [title, setTitle] = useState<string>(" ");

@@ -1,17 +1,20 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { AddItemForm } from './AddItemForm';
 import { FilterValuesType, TaskType } from './App';
+import { EditableSpan } from './EditableSpan';
 
 type TaskManagerType = {
     id: string
     title: string
-    tasks: Array<TaskType>
     filter: FilterValuesType
+    tasks: Array<TaskType>
+    addTask: (title: string, taskListID: string) => void
     removeTask: (taskID: string, taskListID: string) => void
+    removeTaskList: (taskListID: string) => void
     changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
     changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
-    addTask: (title: string, taskListID: string) => void
-    removeTaskList: (taskListID: string) => void
+    changeTaskTitle: (taskID: string, newTitle: string, taskListID: string) => void
+    changeTaskListHeader: (newTitle: string, taskListID: string) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
@@ -20,6 +23,9 @@ export const TaskManager = (props: TaskManagerType) => {
 
     const getTaskJSXElement = (task: TaskType) => {
         let taskClass = task.isDone === true ? "is-done" : ""
+        const changeTaskTitle = (newTitle: string) => {
+            props.changeTaskTitle(task.id, newTitle, props.id)
+        }
         return (
             <li key={task.id} >
                 <input
@@ -28,24 +34,27 @@ export const TaskManager = (props: TaskManagerType) => {
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)}
                 />
-                <span className={taskClass}>{task.title}</span>
+                <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
                 <button onClick={() => props.removeTask(task.id, props.id)}>X</button>
             </li>
         )
     }
-
-    const tasks = props.tasks.map(getTaskJSXElement);
-
     const onClickSetAllFilter = () => props.changeFilter("all", props.id);
     const onClickSetActiveFilter = () => props.changeFilter("active", props.id);
     const onClickSetCompletedFilter = () => props.changeFilter("completed", props.id);
     const removeWholeTaskList = () => props.removeTaskList(props.id);
+    const changeTaskListHeader = (title: string) => props.changeTaskListHeader(title, props.id)
+
+    const tasks = props.tasks.map(getTaskJSXElement);
 
     return (
         <div>
-            <h3>{props.title}<button onClick={removeWholeTaskList}>x</button></h3>
+            <h3>
+                <EditableSpan title={props.title} changeTitle={changeTaskListHeader} />
+                <button onClick={removeWholeTaskList}>x</button>
+            </h3>
 
-           <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTask} />
 
             <ul>
                 {tasks}
