@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { TaskManager } from './TaskManager';
 
@@ -27,7 +28,9 @@ export const EditableSpan = (props: EditableSpanType) => {
 
     return (
         editMode
-            ? <input
+            ? <TextField
+                variant={"standard"}
+                color={"secondary"}
                 value={title}
                 autoFocus
                 onChange={onChangeTitle}
