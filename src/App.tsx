@@ -1,8 +1,11 @@
+
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
 import { TaskManager } from './TaskManager';
+import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
 
 export type TaskType = {
     title: string
@@ -23,7 +26,7 @@ type TasksStateType = {
 }
 
 function App() {
-    // 
+    // BLL:
     const taskListID_1 = v1()
     const taskListID_2 = v1()
     const [lists, setLists] = useState<Array<TaskListType>>([
@@ -46,7 +49,7 @@ function App() {
 
     function removeTask(taskID: string, taskListID: string) {
         tasks[taskListID] = tasks[taskListID].filter(task => task.id !== taskID)
-        setTasks({...tasks})
+        setTasks({ ...tasks })
     }
     function addTask(title: string, taskListID: string) {
         const newTask: TaskType = {
@@ -63,7 +66,7 @@ function App() {
         setTasks({ ...tasks })
     }
     function changeTaskTitle(taskID: string, newTitle: string, taskListID: string) {
-        tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, title: newTitle} : t)
+        tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, title: newTitle } : t)
         setTasks({ ...tasks })
     }
     function changeFilter(filter: FilterValuesType, taskListID: string) {
@@ -80,9 +83,9 @@ function App() {
     }
     const addTaskList = (title: string) => {
         const newTaskListID = v1();
-        const newtaskList: TaskListType= {id: newTaskListID, title, filter: 'all'}
+        const newtaskList: TaskListType = { id: newTaskListID, title, filter: 'all' }
         setLists([...lists, newtaskList])
-        setTasks({...tasks, [newTaskListID]: []})
+        setTasks({ ...tasks, [newTaskListID]: [] })
     }
 
     //UI:
@@ -96,27 +99,48 @@ function App() {
         }
 
         return (
-            <TaskManager
-                key={t.id}
-                id={t.id}
-                filter={t.filter}
-                title={t.title}
-                tasks={tasksForTaskManager}
-                addTask={addTask}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                removeTaskList={removeTaskList}
-                changeTaskStatus={changeTaskStatus}
-                changeTaskTitle={changeTaskTitle}
-                changeTaskListHeader={changeTaskListHeader}
-            />
+            <Grid item key={t .id}>
+                <Paper elevation={6} style={{ padding: "20px" }}>
+                    <TaskManager
+                        key={t.id}
+                        id={t.id}
+                        filter={t.filter}
+                        title={t.title}
+                        tasks={tasksForTaskManager}
+                        addTask={addTask}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        removeTaskList={removeTaskList}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTaskListHeader={changeTaskListHeader}
+                    />
+                </Paper>
+            </Grid>
         )
     })
 
     return (
         <div className="App">
-            <AddItemForm addItem={addTaskList}/>
-            {taskListComponents}
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu />
+                    </IconButton>
+                    <Typography variant="h6" >
+                        News
+                    </Typography>
+                    <Button color="inherit">LOgin</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={{ padding: "20px 0px" }}>
+                    <AddItemForm addItem={addTaskList} />
+                </Grid>
+                <Grid container spacing={4}>
+                    {taskListComponents}
+                </Grid>
+            </Container>
         </div>
     );
 }

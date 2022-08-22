@@ -51,6 +51,7 @@ export const TaskManager = (props: TaskManagerType) => {
     const onClickSetCompletedFilter = () => props.changeFilter("completed", props.id);
     const removeWholeTaskList = () => props.removeTaskList(props.id);
     const changeTaskListHeader = (title: string) => props.changeTaskListHeader(title, props.id)
+    
 
     const tasks = props.tasks.map(getTaskJSXElement);
 
