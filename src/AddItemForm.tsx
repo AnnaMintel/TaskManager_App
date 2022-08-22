@@ -1,3 +1,5 @@
+import { IconButton } from '@material-ui/core';
+import { AddBox } from '@material-ui/icons';
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 type AddItemFormPropsType = {
@@ -38,7 +40,9 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 onKeyPress={onKeyPressAddItem}
                 className={error ? "error" : ""}
             />
-            <button onClick={onClickAddItem}>+</button>
+            <IconButton>
+                <AddBox onClick={onClickAddItem} />
+            </IconButton>
             {error && <div style={{ color: "red" }}>Title is required!</div>}
         </div>
     )
