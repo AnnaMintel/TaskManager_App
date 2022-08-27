@@ -15,13 +15,13 @@ export type TaskType = {
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-type TaskListType = {
+export type TaskListType = {
     id: string
     title: string
     filter: FilterValuesType
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -47,6 +47,7 @@ function App() {
         ]
     })
 
+
     function removeTask(taskID: string, taskListID: string) {
         tasks[taskListID] = tasks[taskListID].filter(task => task.id !== taskID)
         setTasks({ ...tasks })
@@ -69,19 +70,21 @@ function App() {
         tasks[taskListID] = tasks[taskListID].map(t => t.id === taskID ? { ...t, title: newTitle } : t)
         setTasks({ ...tasks })
     }
+
+    
     function changeFilter(filter: FilterValuesType, taskListID: string) {
         setLists(lists.map(t => t.id === taskListID ? { ...t, filter: filter } : t))
     }
     function changeTaskListHeader(newTitle: string, taskListID: string) {
         setLists(lists.map(t => t.id === taskListID ? { ...t, title: newTitle } : t))
     }
-    const removeTaskList = (taskListID: string) => {
+    function removeTaskList (taskListID: string) {
         setLists(lists.filter(t => t.id !== taskListID))
         const copyTasks = { ...tasks }
         delete copyTasks[taskListID]
         setTasks(copyTasks)
     }
-    const addTaskList = (title: string) => {
+    function addTaskList (title: string) {
         const newTaskListID = v1();
         const newtaskList: TaskListType = { id: newTaskListID, title, filter: 'all' }
         setLists([...lists, newtaskList])
