@@ -1,4 +1,4 @@
-import { ActionType, taskListReducer } from './todolist-reduces';
+import { ActionType, RemoveTaskListAC, taskListReducer, AddTaskListAC, ChangeFilterTaskAC, ChangeTaskListHeaderAC } from './todolist-reduces';
 import {v1} from 'uuid';
 import {FilterValuesType, TaskListType } from '../App';
 
@@ -27,8 +27,7 @@ test('correct todolist should be added', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
  
-    const endState = taskListReducer(startState, { type: "ADD-TASKLIST", title: newTodolistTitle})
- 
+    const endState = taskListReducer(startState, AddTaskListAC(newTodolistTitle) )
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe(newTodolistTitle);
  });
@@ -51,7 +50,7 @@ test('correct todolist should be added', () => {
         title: newTodolistTitle
     };
  
-    const endState = taskListReducer(startState, action);
+    const endState = taskListReducer(startState, ChangeTaskListHeaderAC(newTodolistTitle, todolistId1));
  
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);
@@ -75,7 +74,7 @@ test('correct todolist should be added', () => {
         filter: newFilter
     };
  
-    const endState = taskListReducer(startState, action);
+    const endState = taskListReducer(startState, ChangeFilterTaskAC(newFilter, todolistId1));
  
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);

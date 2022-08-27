@@ -23,8 +23,8 @@ export type ChangeFilterTaskListActionType = {
     id: string
 }
 
-export type ActionType = RemoveTaskListActionType | AddTaskListActionType | 
-            ChangeTaskListHeaderActionType | ChangeFilterTaskListActionType
+export type ActionType = RemoveTaskListActionType | AddTaskListActionType |
+    ChangeTaskListHeaderActionType | ChangeFilterTaskListActionType
 
 export const taskListReducer = (state: Array<TaskListType>, action: ActionType) => {
     switch (action.type) {
@@ -35,11 +35,24 @@ export const taskListReducer = (state: Array<TaskListType>, action: ActionType) 
             const newtaskList: TaskListType = { id: newTaskListID, title: action.title, filter: 'all' }
             return [...state, newtaskList]
         case "CHANGEHEADER-TASKLIST":
-            return state.map(t => t.id === action.id? { ...t, title: action.title } : t)
+            return state.map(t => t.id === action.id ? { ...t, title: action.title } : t)
         case "CHANGEFILTER-TASKLIST":
             return state.map(t => t.id === action.id ? { ...t, filter: action.filter } : t)
 
         default:
             return state
     }
+}
+
+export const RemoveTaskListAC = (id: string): RemoveTaskListActionType => {
+    return { type: "REMOVE-TASKLIST", id: id }
+}
+export const AddTaskListAC = (title: string): AddTaskListActionType => {
+    return { type: "ADD-TASKLIST", title: title }
+}
+export const ChangeTaskListHeaderAC = (title: string, id: string): ChangeTaskListHeaderActionType => {
+    return { type: "CHANGEHEADER-TASKLIST", title: title, id: id }
+}
+export const ChangeFilterTaskAC = (filter: FilterValuesType, id: string): ChangeFilterTaskListActionType => {
+    return { type: "CHANGEFILTER-TASKLIST", filter: filter, id: id }
 }
