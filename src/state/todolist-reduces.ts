@@ -9,6 +9,7 @@ export type RemoveTaskListActionType = {
 export type AddTaskListActionType = {
     type: "ADD-TASKLIST"
     title: string
+    todolistID: string
 }
 
 export type ChangeTaskListHeaderActionType = {
@@ -31,8 +32,8 @@ export const taskListReducer = (state: Array<TaskListType>, action: ActionType) 
         case "REMOVE-TASKLIST":
             return state.filter(t => t.id !== action.id)
         case "ADD-TASKLIST":
-            const newTaskListID = v1();
-            const newtaskList: TaskListType = { id: newTaskListID, title: action.title, filter: 'all' }
+            // const newTaskListID = v1();
+            const newtaskList: TaskListType = { id: action.todolistID, title: action.title, filter: 'all' }
             return [...state, newtaskList]
         case "CHANGEHEADER-TASKLIST":
             return state.map(t => t.id === action.id ? { ...t, title: action.title } : t)
@@ -48,7 +49,7 @@ export const RemoveTaskListAC = (id: string): RemoveTaskListActionType => {
     return { type: "REMOVE-TASKLIST", id: id }
 }
 export const AddTaskListAC = (title: string): AddTaskListActionType => {
-    return { type: "ADD-TASKLIST", title: title }
+    return { type: "ADD-TASKLIST", title: title, todolistID: v1()}
 }
 export const ChangeTaskListHeaderAC = (title: string, id: string): ChangeTaskListHeaderActionType => {
     return { type: "CHANGEHEADER-TASKLIST", title: title, id: id }
