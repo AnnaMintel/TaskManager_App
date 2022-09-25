@@ -90,7 +90,7 @@ export const removeTaskAC = (taskID: string, todolistID: string): RemoveTaskActi
 export const addTaskAC = (title: string, todolistID: string): AddTaskActionType => {
     return { type: 'ADD_TASK', title, todolistID }
 }
-export const changeTaskStatusAC = (taskID: string, todolistID: string, isDone: boolean): ChangeTaskStatusActionType => {
+export const changeTaskStatusAC = (taskID: string, isDone: boolean, todolistID: string): ChangeTaskStatusActionType => {
     return { type: 'CHANGE_STATUS', taskID, todolistID, isDone }
 }
 export const changeTaskTitleAC = (taskID: string, title: string, todolistID: string): ChangeTaskTitleActionType => {
