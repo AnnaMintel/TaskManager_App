@@ -27,7 +27,9 @@ export type ChangeFilterTaskListActionType = {
 export type ActionType = RemoveTaskListActionType | AddTaskListActionType |
     ChangeTaskListHeaderActionType | ChangeFilterTaskListActionType
 
-export const taskListReducer = (state: Array<TaskListType>, action: ActionType) => {
+let initialState: Array<TaskListType> = []
+
+export const taskListReducer = (state = initialState, action: ActionType) => {
     switch (action.type) {
         case "REMOVE-TASKLIST":
             return state.filter(t => t.id !== action.id)

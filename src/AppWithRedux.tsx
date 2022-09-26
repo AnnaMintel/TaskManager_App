@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react';
+import React, { useSelector, useDispatch } from 'react-redux';
 import { v1 } from 'uuid';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
@@ -7,6 +8,7 @@ import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography
 import { Menu } from '@material-ui/icons';
 import { ChangeFilterTaskAC, ChangeTaskListHeaderAC, AddTaskListAC, RemoveTaskListAC, taskListReducer } from './state/todolist-reduces';
 import { removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC, tasksReducer } from './state/tasks-reduser';
+import { AppRootStateType } from './state/store';
 
 export type TaskType = {
     title: string
@@ -26,64 +28,67 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function AppWithReducers() {
+function AppWithRedux() {
     // BLL:
-    const taskListID_1 = v1()
-    const taskListID_2 = v1()
-    const [lists, dispatchLists] = useReducer(taskListReducer, [
-        { id: taskListID_1, title: "What to do", filter: "all" },
-        { id: taskListID_2, title: "What to buy", filter: "all" },
-    ])
+    // const taskListID_1 = v1()
+    // const taskListID_2 = v1()
+    // const [lists, dispatchLists] = useReducer(taskListReducer, [
+    //     { id: taskListID_1, title: "What to do", filter: "all" },
+    //     { id: taskListID_2, title: "What to buy", filter: "all" },
+    // ])
 
-    const [tasks, dispatchTasks] = useReducer(tasksReducer, {
-        [taskListID_1]: [
-            { id: v1(), title: "learn JS", isDone: false },
-            { id: v1(), title: "make makeUp", isDone: true },
-            { id: v1(), title: "run", isDone: false }
-        ],
-        [taskListID_2]: [
-            { id: v1(), title: "bear", isDone: false },
-            { id: v1(), title: "fish", isDone: true },
-            { id: v1(), title: "meat", isDone: false }
-        ]
-    })
+    // const [tasks, dispatchTasks] = useReducer(tasksReducer, {
+    //     [taskListID_1]: [
+    //         { id: v1(), title: "learn JS", isDone: false },
+    //         { id: v1(), title: "make makeUp", isDone: true },
+    //         { id: v1(), title: "run", isDone: false }
+    //     ],
+    //     [taskListID_2]: [
+    //         { id: v1(), title: "bear", isDone: false },
+    //         { id: v1(), title: "fish", isDone: true },
+    //         { id: v1(), title: "meat", isDone: false }
+    //     ]
+    // })
+
+    let taskLists = useSelector<AppRootStateType, TaskListType[]>(state => state.taskLists)
+    let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks)
+
+    let dispatch = useDispatch()
 
 
     function removeTask(taskID: string, taskListID: string) {
         let action = removeTaskAC(taskID, taskListID)
-        dispatchTasks(action)
+        dispatch(action)
     }
     function addTask(title: string, taskListID: string) {
         let action = addTaskAC(title, taskListID)
-        dispatchTasks(action)
+        dispatch(action)
     }
     function changeTaskStatus(taskID: string, isDone: boolean, taskListID: string) {
         let action = changeTaskStatusAC(taskID, isDone, taskListID)
-        dispatchTasks(action)
+        dispatch(action)
     }
     function changeTaskTitle(taskID: string, newTitle: string, taskListID: string) {
         let action = changeTaskTitleAC(taskID, newTitle, taskListID)
-        dispatchTasks(action)
+        dispatch(action)
     }
 
 
     function changeFilter(filter: FilterValuesType, taskListID: string) {
         let action = ChangeFilterTaskAC(filter, taskListID)
-        dispatchLists(action)
+        dispatch(action)
     }
     function changeTaskListHeader(newTitle: string, taskListID: string) {
         let action = ChangeTaskListHeaderAC(newTitle, taskListID)
-        dispatchLists(action)
+        dispatch(action)
     }
     function removeTaskList(taskListID: string) {
         let action = RemoveTaskListAC(taskListID)
-        dispatchLists(action)
-        dispatchTasks(action)
+        dispatch(action)
     }
     function addTaskList(title: string) {
         let action = AddTaskListAC(title)
-        dispatchLists(action)
-        dispatchTasks(action)
+        dispatch(action)
     }
 
     //UI:
@@ -142,4 +147,5 @@ function AppWithReducers() {
         </div>
     );
 }
-export default AppWithReducers;
+export default AppWithRedux;
+
