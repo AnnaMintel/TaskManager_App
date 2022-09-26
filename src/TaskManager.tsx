@@ -1,43 +1,52 @@
 
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import { FilterValuesType, TaskType } from './App';
 import { EditableSpan } from './EditableSpan';
-import { Button, Checkbox,  IconButton } from '@material-ui/core';
+import { Button, Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
+import { AppRootStateType } from './state/store';
+import { TaskListType } from './AppWithReducers';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reduser';
+import { ChangeFilterTaskAC, ChangeTaskListHeaderAC, RemoveTaskListAC } from './state/todolist-reduces';
 
 type TaskManagerType = {
     id: string
-    title: string
-    filter: FilterValuesType
-    tasks: Array<TaskType>
-    addTask: (title: string, taskListID: string) => void
-    removeTask: (taskID: string, taskListID: string) => void
-    removeTaskList: (taskListID: string) => void
-    changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
-    changeTaskTitle: (taskID: string, newTitle: string, taskListID: string) => void
-    changeTaskListHeader: (newTitle: string, taskListID: string) => void
+    // title: string
+    // filter: FilterValuesType
+    // tasks: Array<TaskType>
+    // addTask: (title: string, taskListID: string) => void
+    // removeTask: (taskID: string, taskListID: string) => void
+    // removeTaskList: (taskListID: string) => void
+    // changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
+    // changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
+    // changeTaskTitle: (taskID: string, newTitle: string, taskListID: string) => void
+    // changeTaskListHeader: (newTitle: string, taskListID: string) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
 
-    const addTask = (title: string) => props.addTask(title, props.id);
+    let list = useSelector<AppRootStateType, TaskListType>(state => {
+        return state.todolists.filter(list => list.id === props.id)[0]
+    })
+
+    let dispatch = useDispatch();
+
+    const addTask = (title: string) => dispatch(addTaskAC(title, props.id));
 
     const getTaskJSXElement = (task: TaskType) => {
         let taskClass = task.isDone === true ? "is-done" : ""
-        const changeTaskTitle = (newTitle: string) => {
-            props.changeTaskTitle(task.id, newTitle, props.id)
-        }
-        const removeTask = () => props.removeTask(task.id, props.id)
+        const changeTaskTitle = (newTitle: string) => dispatch(changeTaskTitleAC(task.id, newTitle, props.id));
+        const removeTask = () => dispatch(removeTaskAC(task.id, props.id));
 
         return (
             <li key={task.id} >
                 <Checkbox
-                color={"secondary"}
-                checked={task.isDone}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)}
+                    color={"secondary"}
+                    checked={task.isDone}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, props.id))}
                 />
                 <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
                 <IconButton onClick={removeTask}>
@@ -46,12 +55,12 @@ export const TaskManager = (props: TaskManagerType) => {
             </li>
         )
     }
-    const onClickSetAllFilter = () => props.changeFilter("all", props.id);
-    const onClickSetActiveFilter = () => props.changeFilter("active", props.id);
-    const onClickSetCompletedFilter = () => props.changeFilter("completed", props.id);
-    const removeWholeTaskList = () => props.removeTaskList(props.id);
-    const changeTaskListHeader = (title: string) => props.changeTaskListHeader(title, props.id)
-    
+    const onClickSetAllFilter = () => dispatch(ChangeFilterTaskAC("all", props.id));
+    const onClickSetActiveFilter = () => dispatch(ChangeFilterTaskAC("active", props.id));
+    const onClickSetCompletedFilter = () => dispatch(ChangeFilterTaskAC("completed", props.id);
+    const removeWholeTaskList = () => dispatch(RemoveTaskListAC(props.id));
+    const changeTaskListHeader = (title: string) => dispatch(ChangeTaskListHeaderAC(title, props.id));
+
 
     const tasks = props.tasks.map(getTaskJSXElement);
 

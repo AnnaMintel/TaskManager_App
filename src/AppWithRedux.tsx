@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from 'react';
-import React, { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { v1 } from 'uuid';
 import { AddItemForm } from './AddItemForm';
 import './App.css';
@@ -50,11 +50,10 @@ function AppWithRedux() {
     //     ]
     // })
 
-    let taskLists = useSelector<AppRootStateType, TaskListType[]>(state => state.taskLists)
-    let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks)
+    let taskLists = useSelector<AppRootStateType, TaskListType[]>(state => state.todolists)
+    let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     let dispatch = useDispatch()
-
 
     function removeTask(taskID: string, taskListID: string) {
         let action = removeTaskAC(taskID, taskListID)
@@ -92,7 +91,7 @@ function AppWithRedux() {
     }
 
     //UI:
-    const taskListComponents = lists.map(t => {
+    const taskListComponents = taskLists.map(t => {
         let tasksForTaskManager = tasks[t.id]
         if (t.filter === "active") {
             tasksForTaskManager = tasks[t.id].filter(t => t.isDone === false)
@@ -107,16 +106,16 @@ function AppWithRedux() {
                     <TaskManager
                         key={t.id}
                         id={t.id}
-                        filter={t.filter}
-                        title={t.title}
-                        tasks={tasksForTaskManager}
-                        addTask={addTask}
-                        removeTask={removeTask}
-                        changeFilter={changeFilter}
-                        removeTaskList={removeTaskList}
-                        changeTaskStatus={changeTaskStatus}
-                        changeTaskTitle={changeTaskTitle}
-                        changeTaskListHeader={changeTaskListHeader}
+                        // filter={t.filter}
+                        // title={t.title}
+                        // tasks={tasksForTaskManager}
+                        // addTask={addTask}
+                        // removeTask={removeTask}
+                        // changeFilter={changeFilter}
+                        // removeTaskList={removeTaskList}
+                        // changeTaskStatus={changeTaskStatus}
+                        // changeTaskTitle={changeTaskTitle}
+                        // changeTaskListHeader={changeTaskListHeader}
                     />
                 </Paper>
             </Grid>
