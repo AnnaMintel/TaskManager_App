@@ -13,22 +13,22 @@ import { ChangeFilterTaskAC, ChangeTaskListHeaderAC, RemoveTaskListAC } from './
 
 type TaskManagerType = {
     id: string
-    // title: string
-    // filter: FilterValuesType
-    // tasks: Array<TaskType>
-    // addTask: (title: string, taskListID: string) => void
-    // removeTask: (taskID: string, taskListID: string) => void
-    // removeTaskList: (taskListID: string) => void
-    // changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
-    // changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
-    // changeTaskTitle: (taskID: string, newTitle: string, taskListID: string) => void
-    // changeTaskListHeader: (newTitle: string, taskListID: string) => void
+    title: string
+    filter: FilterValuesType
+    tasks: Array<TaskType>
+    addTask: (title: string, taskListID: string) => void
+    removeTask: (taskID: string, taskListID: string) => void
+    removeTaskList: (taskListID: string) => void
+    changeFilter: (newFilterValue: FilterValuesType, taskListID: string) => void
+    changeTaskStatus: (taskID: string, isDone: boolean, taskListID: string) => void
+    changeTaskTitle: (taskID: string, newTitle: string, taskListID: string) => void
+    changeTaskListHeader: (newTitle: string, taskListID: string) => void
 }
 
 export const TaskManager = (props: TaskManagerType) => {
 
-    let list = useSelector<AppRootStateType, TaskListType>(state => {
-        return state.todolists.filter(list => list.id === props.id)[0]
+    let task = useSelector<AppRootStateType, TaskListType>(state => {
+        return state.todolists.filter(task => task.id === props.id)[0]
     })
 
     let dispatch = useDispatch();
@@ -57,7 +57,7 @@ export const TaskManager = (props: TaskManagerType) => {
     }
     const onClickSetAllFilter = () => dispatch(ChangeFilterTaskAC("all", props.id));
     const onClickSetActiveFilter = () => dispatch(ChangeFilterTaskAC("active", props.id));
-    const onClickSetCompletedFilter = () => dispatch(ChangeFilterTaskAC("completed", props.id);
+    const onClickSetCompletedFilter = () => dispatch(ChangeFilterTaskAC("completed", props.id));
     const removeWholeTaskList = () => dispatch(RemoveTaskListAC(props.id));
     const changeTaskListHeader = (title: string) => dispatch(ChangeTaskListHeaderAC(title, props.id));
 

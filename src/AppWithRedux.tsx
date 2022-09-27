@@ -106,16 +106,16 @@ function AppWithRedux() {
                     <TaskManager
                         key={t.id}
                         id={t.id}
-                        // filter={t.filter}
-                        // title={t.title}
-                        // tasks={tasksForTaskManager}
-                        // addTask={addTask}
-                        // removeTask={removeTask}
-                        // changeFilter={changeFilter}
-                        // removeTaskList={removeTaskList}
-                        // changeTaskStatus={changeTaskStatus}
-                        // changeTaskTitle={changeTaskTitle}
-                        // changeTaskListHeader={changeTaskListHeader}
+                        filter={t.filter}
+                        title={t.title}
+                        tasks={tasksForTaskManager}
+                        addTask={addTask}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        removeTaskList={removeTaskList}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTaskListHeader={changeTaskListHeader}
                     />
                 </Paper>
             </Grid>
