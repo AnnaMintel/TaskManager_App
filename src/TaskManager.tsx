@@ -1,5 +1,4 @@
-
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AddItemForm } from './AddItemForm';
 import { FilterValuesType, TaskType } from './App';
@@ -25,8 +24,8 @@ type TaskManagerType = {
     changeTaskListHeader: (newTitle: string, taskListID: string) => void
 }
 
-export const TaskManager = (props: TaskManagerType) => {
-
+export const TaskManager = React.memo((props: TaskManagerType) => {
+    console.log('todolist clicked')
     let task = useSelector<AppRootStateType, TaskListType>(state => {
         return state.todolists.filter(task => task.id === props.id)[0]
     })
@@ -55,14 +54,22 @@ export const TaskManager = (props: TaskManagerType) => {
             </li>
         )
     }
-    const onClickSetAllFilter = () => dispatch(ChangeFilterTaskAC("all", props.id));
-    const onClickSetActiveFilter = () => dispatch(ChangeFilterTaskAC("active", props.id));
-    const onClickSetCompletedFilter = () => dispatch(ChangeFilterTaskAC("completed", props.id));
+    const onClickSetAllFilter = useCallback(() => dispatch(ChangeFilterTaskAC("all", props.id)), []);
+    const onClickSetActiveFilter = useCallback(() => dispatch(ChangeFilterTaskAC("active", props.id)), []);
+    const onClickSetCompletedFilter = useCallback(() => dispatch(ChangeFilterTaskAC("completed", props.id)), []);
     const removeWholeTaskList = () => dispatch(RemoveTaskListAC(props.id));
     const changeTaskListHeader = (title: string) => dispatch(ChangeTaskListHeaderAC(title, props.id));
 
+    let allTaskManagerTasks = props.tasks;
+    let tasksForTaskManager = allTaskManagerTasks;
+    if (props.filter === "active") {
+        tasksForTaskManager = allTaskManagerTasks.filter(t => t.isDone === false)
+    }
+    if (props.filter === "completed") {
+        tasksForTaskManager = allTaskManagerTasks.filter(t => t.isDone === true)
+    }
 
-    const tasks = props.tasks.map(getTaskJSXElement);
+    const tasks = tasksForTaskManager.map(getTaskJSXElement);
 
     return (
         <div>
@@ -77,7 +84,8 @@ export const TaskManager = (props: TaskManagerType) => {
 
             <ul style={{ listStyle: "none", paddingLeft: "0" }}>
                 {tasks}
-            </ul><div>
+            </ul>
+            <div>
                 <Button
                     variant={"contained"}
                     color={props.filter === "all" ? "secondary" : "primary"}
@@ -99,4 +107,4 @@ export const TaskManager = (props: TaskManagerType) => {
             </div>
         </div>
     )
-}
+})
