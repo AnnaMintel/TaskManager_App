@@ -38,36 +38,36 @@ function AppWithRedux() {
     const removeTask = useCallback((taskID: string, taskListID: string) => {
         let action = removeTaskAC(taskID, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const addTask = useCallback((title: string, taskListID: string) => {
         let action = addTaskAC(title, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const changeTaskStatus = useCallback((taskID: string, isDone: boolean, taskListID: string) => {
         let action = changeTaskStatusAC(taskID, isDone, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const changeTaskTitle = useCallback((taskID: string, newTitle: string, taskListID: string) => {
         let action = changeTaskTitleAC(taskID, newTitle, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
 
     const changeFilter = useCallback((filter: FilterValuesType, taskListID: string) => {
         let action = ChangeFilterTaskAC(filter, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const changeTaskListHeader = useCallback((newTitle: string, taskListID: string) => {
         let action = ChangeTaskListHeaderAC(newTitle, taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const removeTaskList = useCallback((taskListID: string) => {
         let action = RemoveTaskListAC(taskListID)
         dispatch(action)
-    }, [])
+    }, [dispatch])
     const addTaskList = useCallback((title: string) => {
         let action = AddTaskListAC(title)
         dispatch(action)
-    }, [])
+    }, [dispatch])
 
     //UI:
     const taskListComponents = taskLists.map(t => {

@@ -9,6 +9,7 @@ import { AppRootStateType } from './state/store';
 import { TaskListType } from './AppWithReducers';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reduser';
 import { ChangeFilterTaskAC, ChangeTaskListHeaderAC, RemoveTaskListAC } from './state/todolist-reduces';
+import { Task } from './Task';
 
 type TaskManagerType = {
     id: string
@@ -24,41 +25,30 @@ type TaskManagerType = {
     changeTaskListHeader: (newTitle: string, taskListID: string) => void
 }
 
-export const TaskManager = React.memo((props: TaskManagerType) => {
+export const TaskManager = React.memo((
+    { id, title, ...props }: TaskManagerType) => {
     console.log('todolist clicked')
     let task = useSelector<AppRootStateType, TaskListType>(state => {
-        return state.todolists.filter(task => task.id === props.id)[0]
+        return state.todolists.filter(task => task.id === id)[0]
     })
 
     let dispatch = useDispatch();
 
-    const addTask = (title: string) => dispatch(addTaskAC(title, props.id));
+    const addTask = useCallback((title: string) => dispatch(addTaskAC(title, id)), [id, props.addTask])
 
     const getTaskJSXElement = (task: TaskType) => {
         let taskClass = task.isDone === true ? "is-done" : ""
-        const changeTaskTitle = (newTitle: string) => dispatch(changeTaskTitleAC(task.id, newTitle, props.id));
-        const removeTask = () => dispatch(removeTaskAC(task.id, props.id));
 
-        return (
-            <li key={task.id} >
-                <Checkbox
-                    color={"secondary"}
-                    checked={task.isDone}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, props.id))}
-                />
-                <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
-                <IconButton onClick={removeTask}>
-                    <Delete />
-                </IconButton>
-            </li>
-        )
+        return <Task task={task} id={id}/>
+
     }
-    const onClickSetAllFilter = useCallback(() => dispatch(ChangeFilterTaskAC("all", props.id)), []);
-    const onClickSetActiveFilter = useCallback(() => dispatch(ChangeFilterTaskAC("active", props.id)), []);
-    const onClickSetCompletedFilter = useCallback(() => dispatch(ChangeFilterTaskAC("completed", props.id)), []);
-    const removeWholeTaskList = () => dispatch(RemoveTaskListAC(props.id));
-    const changeTaskListHeader = (title: string) => dispatch(ChangeTaskListHeaderAC(title, props.id));
+
+    const onClickSetAllFilter = useCallback(() => dispatch(ChangeFilterTaskAC("all", id)), [id]);
+    const onClickSetActiveFilter = useCallback(() => dispatch(ChangeFilterTaskAC("active", id)), [id]);
+    const onClickSetCompletedFilter = useCallback(() => dispatch(ChangeFilterTaskAC("completed", id)), [id]);
+    const removeWholeTaskList = useCallback( () => dispatch(RemoveTaskListAC(id)), [id]);
+    const changeTaskListHeader = useCallback((title: string) => dispatch(ChangeTaskListHeaderAC(title, id)),
+                                                                [dispatch, title, id ]);
 
     let allTaskManagerTasks = props.tasks;
     let tasksForTaskManager = allTaskManagerTasks;
@@ -74,7 +64,7 @@ export const TaskManager = React.memo((props: TaskManagerType) => {
     return (
         <div>
             <h3>
-                <EditableSpan title={props.title} changeTitle={changeTaskListHeader} />
+                <EditableSpan title={title} changeTitle={changeTaskListHeader} />
                 <IconButton onClick={removeWholeTaskList}>
                     <Delete />
                 </IconButton>
