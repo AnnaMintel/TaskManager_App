@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { v1 } from 'uuid';
 import { todoApi } from '../api/todolist-api';
 import { FilterValuesType, TodolistType } from '../App';
@@ -98,27 +99,35 @@ export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType =
 
 //thunk
 // get
-export const getTodolistsThunk = () => {
-    return (dispatch: any) => {
-        todoApi.getTodolists()
-            .then((res: any) => {
-                res.data.map((el:any) => dispatch(getTasksTC(el._id)))
-                dispatch(setTodolistsAC(res.data))
-            })
-    }
+export const getTodolistsThunk = () => async (dispatch: Dispatch) => {
+    const res = await todoApi.getTodolists()
+    //@ts-ignore
+    res.data.map((el: any) => dispatch(getTasksTC(el._id)))
+    //@ts-ignore
+    dispatch(setTodolistsAC(res.data))
 }
 // post
 export const addTodolistsThunk = (title: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.createTodolist(title)
             .then((res: any) => {
                 dispatch(addTodolistAC(title))
             })
     }
 }
+// export const addTodolistsThunk = (title: string) => {
+//     return (dispatch: Dispatch<ActionsType>) => {
+//         todoApi.createTodolist(title)
+//             .then((res: any) => {
+//                 dispatch(addTodolistAC(title))
+//             })
+//     }
+// }
+
+
 // put
 export const updateTodolistsThunk = (todolistId: string, title: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.updateTodolist(todolistId, title)
             .then((res: any) => {
                 dispatch(changeTodolistTitleAC(todolistId, title))
@@ -127,7 +136,7 @@ export const updateTodolistsThunk = (todolistId: string, title: string) => {
 }
 // delete
 export const deleteTodolistsThunk = (todolistId: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.deleteTodolist(todolistId)
             .then((res: any) => {
                 dispatch(removeTodolistAC(todolistId))

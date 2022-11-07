@@ -1,6 +1,7 @@
 {
   "name": "todolist-13",
   "version": "0.1.0",
+  "homepage": "https://AnnaMintel.github.io/TaskManager_App",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.2",
@@ -29,6 +30,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

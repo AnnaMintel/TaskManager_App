@@ -3,6 +3,7 @@ import { v1 } from 'uuid';
 import { AddTodolistActionType, RemoveTodolistActionType } from './todolists-reducer';
 import { TasksStateType } from '../App';
 import { todoApi } from '../api/todolist-api';
+import { Dispatch } from 'redux';
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -117,7 +118,7 @@ export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActi
 //thunk
 // get
 export const getTasksTC = (_id: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.getTasks(_id)
             .then((res: any) => {
                 const tasks = res.data
@@ -129,7 +130,7 @@ export const getTasksTC = (_id: string) => {
 
 // post
 export const addTasksTC = (todolistId: string, title: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.createTask(todolistId, title)
             .then((res:any) => {
                 dispatch(addTaskAC(todolistId, title))
@@ -139,7 +140,7 @@ export const addTasksTC = (todolistId: string, title: string) => {
 
 // put
 export const updateTasksTC = (todolistId: string, taskId: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.updateTask(todolistId, taskId)
             .then((res: any) => {
                 dispatch(addTaskAC(todolistId, taskId))
@@ -149,7 +150,7 @@ export const updateTasksTC = (todolistId: string, taskId: string) => {
 
 // delete
 export const deleteTasksTC = (todolistId: string, taskId: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         todoApi.deleteTask(todolistId, taskId)
             .then((res: any) => {
                 dispatch(removeTaskAC(todolistId, taskId))
