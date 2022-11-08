@@ -107,40 +107,19 @@ export const getTodolistsThunk = () => async (dispatch: Dispatch) => {
     dispatch(setTodolistsAC(res.data))
 }
 // post
-export const addTodolistsThunk = (title: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        todoApi.createTodolist(title)
-            .then((res: any) => {
-                dispatch(addTodolistAC(title))
-            })
-    }
+export const addTodolistsThunk = (title: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await todoApi.createTodolist(title)
+    dispatch(addTodolistAC(title))
 }
-// export const addTodolistsThunk = (title: string) => {
-//     return (dispatch: Dispatch<ActionsType>) => {
-//         todoApi.createTodolist(title)
-//             .then((res: any) => {
-//                 dispatch(addTodolistAC(title))
-//             })
-//     }
-// }
-
 
 // put
-export const updateTodolistsThunk = (todolistId: string, title: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        todoApi.updateTodolist(todolistId, title)
-            .then((res: any) => {
-                dispatch(changeTodolistTitleAC(todolistId, title))
-            })
-    }
-}
-// delete
-export const deleteTodolistsThunk = (todolistId: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        todoApi.deleteTodolist(todolistId)
-            .then((res: any) => {
-                dispatch(removeTodolistAC(todolistId))
-            })
-    }
+export const updateTodolistsThunk = (todolistId: string, title: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await todoApi.updateTodolist(todolistId, title)
+    dispatch(changeTodolistTitleAC(todolistId, title))
 }
 
+// delete
+export const deleteTodolistsThunk = (todolistId: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await todoApi.deleteTodolist(todolistId)
+    dispatch(removeTodolistAC(todolistId))
+}
