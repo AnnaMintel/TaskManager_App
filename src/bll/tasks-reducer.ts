@@ -126,6 +126,7 @@ export const getTasksTC = (_id: string) => async (dispatch: Dispatch<ActionsType
 }
 
 // post
+
 export const addTasksTC = (todolistId: string, title: string) => async (dispatch: Dispatch<ActionsType>) => {
     let res = await todoApi.createTask(todolistId, title)
     dispatch(addTaskAC(todolistId, title))
