@@ -121,7 +121,6 @@ export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActi
 export const getTasksTC = (_id: string) => async (dispatch: Dispatch<ActionsType>) => {
     let res = await todoApi.getTasks(_id)
     const tasks = res.data
-    //@ts-ignore
     const action = setTasksAC(tasks, _id)
     dispatch(action)
 }
