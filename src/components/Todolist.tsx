@@ -11,6 +11,7 @@ import { AppRootStateType } from '../bll/store'
 
 export type TaskType = {
     todolistId: string
+    _id: string
     title: string
     isDone: boolean
 }
@@ -18,11 +19,12 @@ export type TaskType = {
 type PropsType = {
     _id: string
     title: string
+    isDone: boolean
     tasks: Array<TaskType>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
-    changeTaskStatus: (todolistId: string, _id: string, isDone: boolean) => void
-    changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
+    changeTaskStatus: (todolistId: string, _id: string, title:string, isDone: boolean) => void
+    changeTaskTitle: (todolistId: string, _id: string, newTitle: string, isDone: boolean) => void
     removeTask: (todolistId: string, _id: string) => void
     removeTodolist: (_id: string) => void
     changeTodolistTitle: (_id: string, newTitle: string) => void
@@ -59,10 +61,10 @@ export const Todolist = React.memo(function (props: PropsType) {
         <div>
             {
                 tasks[props._id]?.map((t: any) => <Task key={t._id} task={t} todolistId={props._id}
-                    _id={t._id}
-                    removeTask={props.removeTask}
+                    _id={t._id} title={props.title} isDone={t.isDone}
                     changeTaskTitle={props.changeTaskTitle}
                     changeTaskStatus={props.changeTaskStatus}
+                    removeTask={props.removeTask}
                 />)
             }
         </div>
