@@ -106,6 +106,7 @@ export const getTodolistsThunk = () => async (dispatch: Dispatch) => {
     //@ts-ignore
     dispatch(setTodolistsAC(res.data))
 }
+
 // post
 export const addTodolistsThunk = (title: string) => async (dispatch: Dispatch<ActionsType>) => {
     let response = await todoApi.createTodolist(title)

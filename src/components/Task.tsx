@@ -11,25 +11,23 @@ type TaskPropsType = {
     todolistId: string
     title: string
     isDone: boolean
-    changeTaskStatus: (todolistId: string, _id: string, title: string, isDone: boolean) => void
-    changeTaskTitle: (todolistId: string, _id: string, newTitle: string, isDone: boolean) => void
+    updateTask: (todolistId: string, _id: string, title: string, isDone: boolean) => void
     removeTask: (todolistId: string, _id: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
 const state = useSelector(state => state);
-console.log(state);
-
+    
     const onClickHandler = useCallback(() =>
         props.removeTask(props.task.todolistId, props._id),
         [props.task.todolistId, props._id]);
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(props.task.todolistId,  props._id, props.title, e.currentTarget.checked)
-    }, [props.task.todolistId, props._id]);
+        props.updateTask(props.task.todolistId,  props._id, props.title, e.currentTarget.checked)
+    }, [props.task.todolistId, props._id, props.title ]);
 
     const onTitleChangeHandler = useCallback((newValue: string) => {
-        props.changeTaskTitle(props.task.todolistId, props._id, newValue, props.isDone )
-    }, [props.task.todolistId, props._id]);
+        props.updateTask(props.task.todolistId, props._id, newValue, props.isDone )
+    }, [props.task.todolistId, props._id, props.isDone]);
 
     return <div key={props.task.todolistId} className={props.task.isDone ? 'is-done' : ''}>
         <Checkbox
