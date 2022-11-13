@@ -2,4 +2,6 @@
 
 https://AnnaMintel.github.io/TaskManager_App
 
-![Screenshot from 2022-11-10 23-52-06](https://user-images.githubusercontent.com/81706814/201203716-f4a61b1d-291c-4d10-a679-4d88cc364daf.png)
+![Screenshot from 2022-11-13 13-37-50](https://user-images.githubusercontent.com/81706814/201517516-64850aab-4ada-4876-9e86-458ca9a7f237.png)
+
+![Screenshot from 2022-11-13 13-37-31](https://user-images.githubusercontent.com/81706814/201517526-844292c3-0940-4c35-890b-3d1fdb4e9d74.png)
