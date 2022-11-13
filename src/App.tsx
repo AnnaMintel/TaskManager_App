@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import './App.css';
+import './styles-background.scss';
 import { TaskType, Todolist } from './components/Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
@@ -46,15 +47,6 @@ function App() {
         dispatch(addTasksTC(todolistId, title));
     }, [dispatch]);
 
-    // const changeTaskTitle = useCallback((todolistId: string, id: string, title:string, isDone: boolean) => {
-    //     dispatch(updateTasksTC(todolistId, id, title, isDone));
-    // }, [dispatch]);
-
-    
-    // const changeStatus = useCallback(function (todolistId: string, id: string, title:string, isDone: boolean) {
-    //     dispatch(updateTasksTC(todolistId, id, title, isDone));
-    // }, [dispatch]);
-
     const updateTask = useCallback((todolistId: string, id: string, title:string, isDone: boolean) => {
         dispatch(updateTasksTC(todolistId, id, title, isDone));
     }, [dispatch]);
@@ -89,7 +81,7 @@ function App() {
                     <IconButton edge="start" color="primary" aria-label="menu">
                         <Menu />
                     </IconButton>
-                    <Typography variant="h6">
+                    <Typography variant="h6" >
                         TaskManager
                     </Typography>
                 </Toolbar>
